@@ -6,9 +6,16 @@ public class Currency {
 
     private double rate;
     private String baseCode;
+    private String country;
     
     public Currency(String baseCode) {
         this.baseCode = baseCode;
+        this.rate = 0;
+    }
+
+    public Currency(String baseCode, String country) {
+        this.baseCode = baseCode;
+        this.country = country;
         this.rate = 0;
     }
 
@@ -23,6 +30,10 @@ public class Currency {
 
     public double getRate() {
         return rate;
+    }
+
+    public String getCountry() {
+        return country;
     }
 
     public void setRate(double rate) {
