@@ -9,7 +9,7 @@ public class UrlBuilder {
 
     public UrlBuilder() {
         this.apiKey = getApiKey();  
-        this.url = "https://v6.exchangerate-api.com/v6/API_KEY/latest/CURRENCY";      
+        this.url = "https://v6.exchangerate-api.com/v6/API_KEY/pair/currency/toConvert/amount";      
     }
 
     private String getApiKey() {
@@ -17,15 +17,14 @@ public class UrlBuilder {
         return dotenv.get("API_KEY");
     }
 
-    public URI getRequestURI(String currency) {
-        return URI.create(url.replace("API_KEY", apiKey).replace("CURRENCY", currency));
+    public URI getRequestURI(Currency currency, Currency toConvert) {
+        var uri = URI.create(url.replace("API_KEY", apiKey)
+            .replace("currency", currency.getBaseCode())
+            .replace("toConvert", toConvert.getBaseCode())
+            .replace("amount", String.valueOf(currency.getRate())));
+        
+        System.out.println(uri);
+        return uri;
     }
 
-    public String getUrl(String currency) {
-        return url.replace("API_KEY", String.valueOf(apiKey)).replace("CURRENCY", currency);
-    }
-
-    public String hi() {
-        return apiKey;
-    }    
 }

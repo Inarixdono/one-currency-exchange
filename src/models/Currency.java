@@ -2,30 +2,40 @@ package models;
 
 import java.io.IOException;
 
-import com.google.gson.JsonObject;
-
 public class Currency {
 
     private double rate;
     private String baseCode;
-    private JsonObject conversionRates;
+    
+    public Currency(String baseCode) {
+        this.baseCode = baseCode;
+        this.rate = 0;
+    }
 
-    public Currency(String currency, double rate) throws IOException, InterruptedException {
+    public Currency(String baseCode, double rate) {
         this.rate = rate;
-        this.baseCode = currency;
-        this.conversionRates = setConversionRates();;
+        this.baseCode = baseCode;
     }
 
     public String getBaseCode() {
         return baseCode;
     }
 
-    private JsonObject setConversionRates() throws IOException, InterruptedException {
-       return this.conversionRates = ConversionRatesFinder.getConversionRates(this);
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public void convertTo(Currency toConvert) throws IOException, InterruptedException {
+        Exchanger converter = new Exchanger();
+        converter.converTo(this, toConvert);
     }
 
     @Override
     public String toString() {
-        return "Currency: " + baseCode + " Rate: " + rate;
+        return rate + " " + baseCode;
     }
 }
