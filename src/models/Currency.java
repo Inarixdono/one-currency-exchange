@@ -67,6 +67,22 @@ public class Currency implements Representable {
         converter.converTo(this, toConvert);
     }
 
+    public static ArrayList<Representable> getCurrencies() {
+        currencies = new ArrayList<>(Arrays.asList(
+                new Currency("USD", "United States"),
+                new Currency("EUR", "European Union"),
+                new Currency("ARS", "Argentina"),
+                new Currency("BOB", "Bolivia"),
+                new Currency("BRL", "Brazil"),
+                new Currency("COP", "Colombia"),
+                new Currency("CLP", "Chile"),
+                new Currency("DOP", "Dominican Republic"),
+                new Currency("MXN", "Mexico"),
+                new Currency("PEN", "Peru")));
+
+        return currencies;
+    }
+
     @Override
     public String toString() {
         NumberFormat formatter = NumberFormat.getInstance();
