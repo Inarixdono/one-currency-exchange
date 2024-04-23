@@ -1,29 +1,42 @@
+/**
+ * The main class of the currency converter application.
+ */
 package main;
 
+import models.Currency;
+import models.Display;
 import java.io.IOException;
 import java.util.Scanner;
 
-import com.google.gson.JsonObject;
+public class App {
+    public static void main(String[] args) {
 
-import models.Currency;
+        Currency to;
+        Currency from;
+        String message;
+        Display display = new Display("Currency", new Scanner(System.in), Currency.getCurrencies());
 
-public class App{
-    public static void main(String[] args) throws IOException, InterruptedException{
+        do {
 
-        double amount;
-        Currency currency;
-        JsonObject conversionRates;
-        String exchangingCurrency;
-        Scanner scan = new Scanner(System.in);
-        
-        System.out.print("Enter the currency you want to exchange: ");
-        exchangingCurrency = scan.nextLine();
-        System.out.print("Enter the amount you want to exchange: ");
-        amount = scan.nextDouble();
-        scan.close();
+            display.showMessage("Welcome to the currency converter!");
 
-        currency = new Currency(exchangingCurrency, amount);
-        
+            try {
+                from = (Currency) display.selectItem("Choose the currency to convert from:");
+                from.resquestAmount(display.getScanner());
 
+                to = (Currency) display.selectItem("Choose the currency to convert to: ");
+                from.convertTo(to);
+
+                message = "Conversion rate: " + from + " = " + to;
+                display.showMessage(message);
+            } catch (IndexOutOfBoundsException e) {
+                display.showMessage("User requested to exit the program. Goodbye!");
+                continue;
+            } catch (IOException | InterruptedException e) {
+                display.showMessage("An error occurred while trying to convert the currency.");
+                continue;
+            }
+
+        } while (display.isRunning());
     }
 }
