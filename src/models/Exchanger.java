@@ -10,22 +10,21 @@ public class Exchanger {
 
     private double conversionResult;
 
-    public void converTo(Currency converting, Currency toConvert) throws IOException, InterruptedException {
+    public void converTo(Currency from, Currency to) throws IOException, InterruptedException {
 
-        var url = new UrlBuilder().getRequestURI(converting, toConvert);
+        var url = new UrlBuilder().getRequestURI(from, to);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(url)
-            .GET()
-            .build();
-        
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());        
+                .uri(url)
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         conversionResult = JsonParser.parseString(response.body())
-            .getAsJsonObject()
-            .get("conversion_result")
-            .getAsDouble();
+                .getAsJsonObject()
+                .get("conversion_result")
+                .getAsDouble();
 
-        toConvert.setRate(conversionResult);
+        to.setAmount(conversionResult);
     }
-
 }
